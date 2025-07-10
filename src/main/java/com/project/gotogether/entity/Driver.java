@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Table(name="drivers")
 public class Driver {
        @Id
+       @GeneratedValue(strategy = GenerationType.UUID)
        private String driverId;
        private String name;
        private String gender;
@@ -29,6 +30,8 @@ public class Driver {
         this.isAvailable = isAvailable;
         this.lastUpdated = lastUpdated;
     }
+
+    public String getDriverId(){return driverId;}
 
     public String getName() {
         return name;

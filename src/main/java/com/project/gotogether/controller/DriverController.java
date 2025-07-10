@@ -1,9 +1,11 @@
 package com.project.gotogether.controller;
 
 
+import com.project.gotogether.entity.Driver;
 import com.project.gotogether.model.DriverLocation;
 import com.project.gotogether.model.RequestResponse;
 import com.project.gotogether.service.DriverService;
+import com.project.gotogether.utils.ResponseUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,14 +16,20 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/gotogether/driver")
-public class DriverLocationController {
+public class DriverController {
 
     private final DriverService driverService;
 
-    public DriverLocationController(DriverService driverService){
+    public DriverController(DriverService driverService){
         this.driverService = driverService;
     }
 
+    @PostMapping("/create")
+    public ResponseEntity<RequestResponse> createDriver(@RequestBody Driver driver){
+        driverService.saveDriver(driver);
+
+        return ResponseUtil.success("Driver successfully created ✅");
+    }
 
     @PostMapping("/location-update")
     public ResponseEntity<RequestResponse> updateLocation(@RequestBody DriverLocation request){
@@ -38,13 +46,6 @@ public class DriverLocationController {
                 request.getLatitude(),
                 request.isAvailable());
 
-        RequestResponse response = new RequestResponse(
-                "success",
-                "Driver location updated successfully ✅",
-                LocalDateTime.now()
-        );
-
-        return ResponseEntity.ok(response);
-
+        return ResponseUtil.success("Driver location updated successfully ✅");
     }
 }

@@ -1,7 +1,10 @@
 package com.project.gotogether.service;
 
 import com.project.gotogether.entity.Driver;
+import com.project.gotogether.model.RequestResponse;
 import com.project.gotogether.repository.DriverRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,7 +18,12 @@ public class DriverService {
         this.driverRepository  = driverRepository;
     }
 
-    public void updateDriverLocation(String driverId, double longitude, double latitude, boolean isAvailable){
+    public void saveDriver(Driver driver){
+        driverRepository.save(driver);
+        System.out.println("Driver saved to DB: " + driver.getDriverId());
+    }
+
+    public ResponseEntity<RequestResponse> updateDriverLocation(String driverId, double longitude, double latitude, boolean isAvailable){
         Optional<Driver> optionalDriver = driverRepository.findById(driverId);
         if(optionalDriver.isPresent()){
             Driver driver = optionalDriver.get();
@@ -25,17 +33,22 @@ public class DriverService {
             driver.setLastUpdated(LocalDateTime.now());
             driverRepository.save(driver);
             System.out.println("✅ Driver updated: " + driverId);
-        } else {
-            Driver driver = new Driver();
-            driver.setName("Driver " + driverId);
-            driver.setPhoneNumber("0000000000");
-            driver.setGender("NA");
-            driver.setLatitude(latitude);
-            driver.setLongitude(longitude);
-            driver.setAvailable(isAvailable);
-            driver.setLastUpdated(LocalDateTime.now());
-            driverRepository.save(driver);
-            System.out.println("✅ New Driver created: " + driverId);
         }
+        else{
+            RequestResponse failResponse = new RequestResponse(
+                    "failure",
+                    "Driver details not Found to update",
+                    LocalDateTime.now()
+            );
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(failResponse);
+        }
+
+        RequestResponse successResponse = new RequestResponse(
+                "failure",
+                "Driver details not Found to update",
+                LocalDateTime.now());
+
+        return ResponseEntity.status(HttpStatus.OK).body(successResponse);
     }
 }

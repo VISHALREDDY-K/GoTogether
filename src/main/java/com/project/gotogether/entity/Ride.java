@@ -1,6 +1,7 @@
 package com.project.gotogether.entity;
 
 
+import com.project.gotogether.model.RideRequest;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -32,6 +33,19 @@ public class Ride {
     // Constructors
     public Ride() {}
 
+    public Ride(RideRequest rideRequest, String state){
+        this.riderId = rideRequest.getRiderId();
+        this.pickupLat = rideRequest.getPickupLat();
+        this.pickupLong = rideRequest.getPickupLong();
+        this.dropLat = rideRequest.getDropLat();
+        this.dropLong = rideRequest.getDropLong();
+        this.detourLimit = rideRequest.getDetourLimit();
+        this.genderPreference = rideRequest.getGenderPreference();
+        this.date = rideRequest.getDate();
+        this.time = rideRequest.getTime();
+        this.status = state;
+    }
+
     public Ride(String riderId, String driverId, double pickupLat, double pickupLong, double dropLat, double dropLong,
                 int detourLimit, String genderPreference, LocalDate date, LocalTime time, String status) {
         this.riderId = riderId;
@@ -46,6 +60,7 @@ public class Ride {
         this.time = time;
         this.status = status;
     }
+
 
     // Getters and Setters
 

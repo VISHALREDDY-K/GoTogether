@@ -1,9 +1,12 @@
 package com.project.gotogether.controller;
 
 
+import com.project.gotogether.entity.Ride;
 import com.project.gotogether.model.MatchResponse;
 import com.project.gotogether.model.RequestResponse;
 import com.project.gotogether.model.RideRequest;
+import com.project.gotogether.service.RideService;
+import com.project.gotogether.utils.ResponseUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +18,12 @@ import java.util.List;
 @RequestMapping("gotogether/rider")
 public class RiderController {
 
+    private final RideService rideService;
+
+    public RiderController(RideService rideService){
+        this.rideService = rideService;
+    }
+
     @PostMapping("/request-ride")
     public ResponseEntity<RequestResponse> requestRide(@RequestBody RideRequest request) {
 
@@ -22,13 +31,11 @@ public class RiderController {
 
         // 🔥 TODO: Save ride to DB and publish to Kafka topic
 
-        RequestResponse response = new RequestResponse(
-                "success",
-                "Ride request received successfully",
-                LocalDateTime.now()
-        );
+        Ride ride = new Ride(request, "NEW");
+        rideService.saveRide(ride);
 
-        return ResponseEntity.ok(response);
+
+        return ResponseUtil.success("Ride request received successfully");
     }
 
     @GetMapping("/matches")

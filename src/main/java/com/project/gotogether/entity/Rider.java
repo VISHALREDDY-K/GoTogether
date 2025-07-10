@@ -26,7 +26,7 @@ public class Rider {
 
     // Getters and Setters
 
-    public Long getRiderId() { return riderId; }
+    public String getRiderId() { return riderId; }
     public void setRiderId(String riderId) { this.riderId = riderId; }
 
     public String getName() { return name; }
