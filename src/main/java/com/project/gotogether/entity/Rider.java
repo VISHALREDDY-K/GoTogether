@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 public class Rider {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String riderId;
 
     private String name;

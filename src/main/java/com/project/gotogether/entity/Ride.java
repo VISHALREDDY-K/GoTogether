@@ -12,6 +12,7 @@ import java.time.LocalTime;
 public class Ride {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String rideId;
 
     private String riderId;  // For now storing as String, you can FK to Rider if you want later
